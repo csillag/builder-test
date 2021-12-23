@@ -1,11 +1,10 @@
-import React from 'react';
-import { Hello } from './Hello';
-import { Info } from './Info';
+import React from "react";
+import { MainMenu } from "/imports/ui/MainMenu";
+import "antd/dist/antd.css";
 
 export const App = () => (
   <div>
-    <h1>Welcome to Meteor!</h1>
-    <Hello />
-    <Info />
+    <h1>Csillag's Builder Test App</h1>
+    <MainMenu />
   </div>
 );
