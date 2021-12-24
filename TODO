@@ -1,0 +1,2 @@
+- Improve performance by properly configuring MongoDB indices
+- Implement server-side paging of the list
