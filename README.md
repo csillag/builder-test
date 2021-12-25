@@ -4,6 +4,8 @@
 
 This is a simple test app, implementing the coding challenge of an unnamed company
 
+A live version of this code is running at https://builder-test.meteorapp.com/.
+
 ## How to run?
 
 Just run `make`.
