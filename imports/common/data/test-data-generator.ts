@@ -30,7 +30,7 @@ function generateCompanies(number: number) {
   const results: Company[] = [];
   let newName = "";
   for (let i = 0; i < number; i++) {
-    while (results.some((r) => r.name === newName)) {
+    while (!newName || results.some((r) => r.name === newName)) {
       newName = chance.company();
     }
     results.push({
