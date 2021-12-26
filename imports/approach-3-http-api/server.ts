@@ -17,7 +17,7 @@ export function parseQuery(query: string) {
   const result: Record<string, any> = {};
   (query || "").split("&").forEach((q) => {
     const [key, value] = q.split("=");
-    result[key] = value;
+    result[key] = decodeURIComponent(value);
   });
   return result;
 }
