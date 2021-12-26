@@ -5,6 +5,7 @@ import { Company, CompanyQuery } from "/imports/common/data/types";
 import { ResultTable } from "/imports/common/ui-widgets/ResultsTable";
 import { SearchInput } from "/imports/common/ui-widgets/SearchInput";
 import { Alert, Button } from "antd";
+import { compareCompany } from "/imports/common/util";
 
 const DOCS =
   "This implementation uses Meteor Methods for communication. " +
@@ -12,10 +13,6 @@ const DOCS =
   "No DB is involved, the data is loaded from a JSON data file, and then the server stores it in memory. " +
   "Unlike the previous Collections-based approach, this data is not live; " +
   "data needs to be refreshed to get the latest changes.";
-
-// Helper function for sorting the companies based on their IDs
-const compareCompany = (a: Company, b: Company) =>
-  a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 
 type MeteorCallback<T = void> = (error?: any, data?: T) => void;
 

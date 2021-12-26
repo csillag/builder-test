@@ -2,14 +2,26 @@ import { Meteor } from "meteor/meteor";
 import { Company, CompanyQuery } from "/imports/common/data/types";
 import { loadCompanyTestData } from "/imports/common/data/test-data-generator";
 
+/**
+ * The company data; extended with the list of specialities expressed as a Set
+ */
+interface EnhancedCompany extends Company {
+  specSet: Set<string>;
+}
+
 // We are going to story the data in memory
-let companies: Company[] = [];
+let companies: EnhancedCompany[] = [];
 // A map to access the data efficiently based on company ID
 const companiesById: Record<string, Company> = {};
 
 // Upon launching the server, we load the data
 Meteor.startup(() => {
-  companies = loadCompanyTestData();
+  companies = loadCompanyTestData().map((c) => ({
+    ...c,
+    // We want to convert the list of specialities to a Set, and cache it for future filtering
+    // This runs only once, so the speed is not crucial.
+    specSet: new Set(c.specialities),
+  }));
   companies.forEach((c) => (companiesById[c._id] = c));
 });
 
@@ -29,9 +41,8 @@ Meteor.methods({
     if (requiredSpecialities.length) {
       // Filter for the required specialities, if we have to
       results = results.filter((c) =>
-        requiredSpecialities.every((speciality) =>
-          c.specialities.includes(speciality)
-        )
+        // Set.has() is faster than Array.includes(), so we are going to use this for the filtering.
+        requiredSpecialities.every((spec) => c.specSet.has(spec))
       );
     }
     return results;

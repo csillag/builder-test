@@ -7,6 +7,7 @@ import { Company, CompanyQuery } from "/imports/common/data/types";
 import { ResultTable } from "/imports/common/ui-widgets/ResultsTable";
 import { SearchInput } from "/imports/common/ui-widgets/SearchInput";
 import { Alert, Button } from "antd";
+import { compareCompany } from "/imports/common/util";
 
 const DOCS =
   "This implementation uses MongoDB Collections, a live DDP connection, and MiniMongo - the default Meteor data stack. " +
@@ -15,10 +16,6 @@ const DOCS =
   "We don't really have to code any of the server APIs, since they are available out of the box from Meteor. " +
   "Please also note that this data is live; if you open the app in multiple browser windows, " +
   "changes from one window instantly propagate to all other ones. (Click on the 'certified' icons to test.)";
-
-// Helper function for sorting the companies
-const compareCompany = (a: Company, b: Company) =>
-  a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
 
 /**
  * We will wrap the data access behind this API
