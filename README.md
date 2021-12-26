@@ -5,6 +5,9 @@
 This is a simple test app, implementing the coding challenge of an unnamed company
 
 A live version of this code is running at https://builder-test.meteorapp.com/.
+(Unless it's temporarily taken offline by the hosting company because of no usage.
+If / when that happens, you need to wait for a few minutes for the app to boot
+up again.)
 
 ## How to run?
 
