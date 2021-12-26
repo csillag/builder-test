@@ -24,47 +24,59 @@ interface DataAPI {
   loadData: (query: CompanyQuery) => Promise<Company[]>;
 
   // Change the certification status of a company
-  setCertified: (id: string, value: boolean) => Promise<any>;
+  setCertified: (id: string, value: boolean) => Promise<void>;
 
   // Hide a company
-  hide: (id: string) => Promise<any>;
+  hide: (id: string) => Promise<void>;
 
   // Show all hidden companies
-  showAllHidden: () => Promise<any>;
+  showAllHidden: () => Promise<void>;
 }
 
-// Utility method to call the API
-function callMethod(name: string, query?: Record<string, any>) {
-  const { protocol, hostname, port } = window.location;
-  const path = `${protocol}//${hostname}:${port}/d3/${name}`;
-  const pieces: string[] = [];
-  if (query) {
-    Object.keys(query).forEach((key) => {
-      const value = query[key];
-      if (value != null) {
-        pieces.push(key + "=" + encodeURIComponent(value));
+// Utility method to call an HTTP API endpoint
+function callMethod<ResultType = void>(
+  name: string,
+  query?: Record<string, any>
+): Promise<ResultType> {
+  return new Promise<ResultType>((resolve, reject) => {
+    const { protocol, hostname, port } = window.location;
+    const path = `${protocol}//${hostname}:${port}/d3/${name}`;
+    const pieces: string[] = [];
+    if (query) {
+      Object.keys(query).forEach((key) => {
+        const value = query[key];
+        if (value != null) {
+          pieces.push(key + "=" + encodeURIComponent(value));
+        }
+      });
+    }
+    const url = pieces.length ? path + "?" + pieces.join("&") : path;
+    fetch(url).then((result) => {
+      if (result.status === 200) {
+        result.text().then((text) => {
+          if (!text.length) {
+            // empty response, this could be ok, depending on the circumstances...
+            resolve(null as any);
+          } else {
+            // Let's parse the answer
+            resolve(JSON.parse(text));
+          }
+        });
+      } else {
+        reject(result.status);
       }
-    });
-  }
-  const url = pieces.length ? path + "?" + pieces.join("&") : path;
-  return fetch(url);
+    }, reject);
+  });
 }
 
 /**
  * Implement the data access API using HTTP call to the API
  */
 const api: DataAPI = {
-  loadData: (query) =>
-    new Promise<Company[]>((resolve, reject) => {
-      callMethod("get-companies", query).then((result) => {
-        if (result.status === 200) {
-          result.json().then(resolve);
-        } else {
-          reject(result.status);
-        }
-      }, reject);
-    }),
+  // Load the data
+  loadData: (query) => callMethod<Company[]>("get-companies", query),
 
+  // Set certification status
   setCertified: (id: string, value: boolean) =>
     callMethod("set-certified", { id, value }),
 

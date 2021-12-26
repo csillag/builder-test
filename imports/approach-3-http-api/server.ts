@@ -78,6 +78,8 @@ Meteor.startup(() => {
     "set-certified",
     ({ id, value }) =>
       (companiesById[id].certified =
+        // depending on the middleware and preprocessing used, we might get
+        // the boolean value converted to a string, so we must take care to check the type.
         typeof value === "boolean" ? value : value === "true")
   );
 
