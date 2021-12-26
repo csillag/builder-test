@@ -5,7 +5,6 @@ import { Company, CompanyQuery } from "/imports/common/data/types";
 import { ResultTable } from "/imports/common/ui-widgets/ResultsTable";
 import { SearchInput } from "/imports/common/ui-widgets/SearchInput";
 import { Alert, Button } from "antd";
-import { API_PATH } from "/imports/approach-3-http-api/common";
 
 const DOCS =
   "This implementation uses plain HTTP API endpoints on top of node.js. " +
@@ -35,7 +34,7 @@ interface DataAPI {
 }
 
 const { protocol, hostname, port } = window.location;
-const ROOT_URL = `${protocol}//${hostname}:${port}${API_PATH}`;
+const ROOT_URL = `${protocol}//${hostname}:${port}/d3/`;
 
 /**
  * Implement the data access API using HTTP call to the API

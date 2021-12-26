@@ -13,8 +13,7 @@
     "chance": "1.1.8",
     "meteor-node-stubs": "^1.1.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "uri-js": "4.4.1"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/chance": "1.1.3",

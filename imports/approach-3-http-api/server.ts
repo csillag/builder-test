@@ -1,13 +1,9 @@
 import { Meteor } from "meteor/meteor";
 // @ts-ignore
 import { JsonRoutes } from "meteor/simple:json-routes";
-
 import { Company } from "/imports/common/data/types";
 import { loadCompanyTestData } from "/imports/common/data/test-data-generator";
-
 import type { IncomingMessage, ServerResponse } from "http";
-import { API_PATH } from "/imports/approach-3-http-api/common";
-// const URI = require("uri-js");
 
 // We are going to story the data in memory
 let companies: Company[] = [];
@@ -35,7 +31,7 @@ function defineEndpoint(
 ) {
   JsonRoutes.add(
     "get",
-    API_PATH + path,
+    `/d3/${path}`,
     (req: IncomingMessage, res: ServerResponse) => {
       const url = req.url!;
       const query = url.substring(url.indexOf("?") + 1);
