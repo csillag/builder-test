@@ -1,2 +1,5 @@
 - Improve performance by properly configuring MongoDB indices
 - Implement server-side paging of the list
+- Proper error handling for RPC calls on both client and server side
+- Sanitizing of user input
+- More performant code for checking if an array contains all members of an other array
