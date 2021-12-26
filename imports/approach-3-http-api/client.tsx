@@ -33,8 +33,22 @@ interface DataAPI {
   showAllHidden: () => Promise<any>;
 }
 
-const { protocol, hostname, port } = window.location;
-const ROOT_URL = `${protocol}//${hostname}:${port}/d3/`;
+// Utility method to call the API
+function callMethod(name: string, query?: Record<string, any>) {
+  const { protocol, hostname, port } = window.location;
+  const path = `${protocol}//${hostname}:${port}/d3/${name}`;
+  const pieces: string[] = [];
+  if (query) {
+    Object.keys(query).forEach((key) => {
+      const value = query[key];
+      if (value != null) {
+        pieces.push(key + "=" + encodeURIComponent(value));
+      }
+    });
+  }
+  const url = pieces.length ? path + "?" + pieces.join("&") : path;
+  return fetch(url);
+}
 
 /**
  * Implement the data access API using HTTP call to the API
@@ -42,11 +56,7 @@ const ROOT_URL = `${protocol}//${hostname}:${port}/d3/`;
 const api: DataAPI = {
   loadData: (query) =>
     new Promise<Company[]>((resolve, reject) => {
-      const url = `${ROOT_URL}get-companies?namePattern=${
-        query.namePattern
-      }&requiredSpecialities=${query.requiredSpecialities.join(",")}`;
-      // console.log("Fetching url", url);
-      fetch(url).then((result) => {
+      callMethod("get-companies", query).then((result) => {
         if (result.status === 200) {
           result.json().then(resolve);
         } else {
@@ -56,13 +66,13 @@ const api: DataAPI = {
     }),
 
   setCertified: (id: string, value: boolean) =>
-    fetch(`${ROOT_URL}set-certified?id=${id}&value=${value}`),
+    callMethod("set-certified", { id, value }),
 
   // Hide a company
-  hide: (id) => fetch(`${ROOT_URL}hide-company?id=${id}`),
+  hide: (id) => callMethod("hide-company", { id }),
 
   // Show all hidden companies
-  showAllHidden: () => fetch(`${ROOT_URL}show-all-companies`),
+  showAllHidden: () => callMethod("show-all-companies"),
 };
 
 /**
