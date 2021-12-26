@@ -37,11 +37,6 @@ Meteor.methods({
     CompanyCollection.update(id, { $set: { certified: value } }),
   d1HideCompany: (id: string) =>
     CompanyCollection.update(id, { $set: { hidden: true } }),
-  d1ShowAllCompanies: () => {
-    const results = CompanyCollection.update(
-      { hidden: true },
-      { $set: { hidden: false } }
-    );
-    console.log("Showing companies", results);
-  },
+  d1ShowAllCompanies: () =>
+    CompanyCollection.update({ hidden: true }, { $set: { hidden: false } }),
 });
